@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+
+    <link rel='stylesheet prefetch' href='http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css'>
+    <style>
+        .ta-editor {
+            min-height: 300px;
+            height: auto;
+            overflow: auto;
+            font-family: inherit;
+            font-size: 100%;
+        }
+    </style>
+
+
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand active" href=@Url.Action("Index", "Dashboard")>Dashboard <span class="glyphicon glyphicon-dashboard"></span></a>
+
+                <a class="navbar-brand" href=@Url.Action("recentPosts", "Post")>Blog <span class="glyphicon glyphicon-pushpin"></span></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href=@Url.Action("Profile","Account")>
+                            Profile <span class="glyphicon glyphicon-education"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=@Url.Action("ChatRoom","Chat")>
+                            Chat Room <span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-user"></span>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href=@Url.Action("Contact","Admin")>
+                            Contact
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=@Url.Action("Index","Podcast")>
+                            Podcast <span class="glyphicon glyphicon-record"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+
+            <div class="col-md-3">
+                <!-- Blog Search Well -->
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /.input-group -->
+                </div>
+                <div class="well">
+                    @{
+                        Html.RenderAction("AdminOptions", "Nav");
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - JunniDotNe</p>
+        </footer>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    
+    <script src="~/Scripts/userViewModel.js"></script>
+</body>
+</html>

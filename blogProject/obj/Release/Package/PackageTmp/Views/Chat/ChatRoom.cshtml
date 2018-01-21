@@ -1,0 +1,1475 @@
+﻿@{
+    ViewBag.Title = "ChatRoom";
+    Layout = "~/Views/Shared/_LayoutTemp.cshtml";
+}
+
+
+<head>
+    <title>Index</title>
+
+    <style type="text/css">
+        #holder {
+            height: 200px;
+            background-color: #F5F5F5;
+            border: 1px solid #A4A4A4;
+            margin-left: 10px;
+        }
+
+        #place {
+            position: relative;
+            margin: 7px;
+        }
+
+            #place a {
+                font-size: 0.6em;
+            }
+
+            #place li {
+                list-style: none outside none;
+                position: absolute;
+            }
+
+                #place li:hover {
+                    background-color: yellow;
+                }
+
+            #place .seat {
+                background-image: url('../../images/available_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .selectedSeat {
+                background-image: url('../../images/booked_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .selectingSeat {
+                background-image: url('../../images/selected_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .row-3, #place .row-4 {
+                margin-top: 10px;
+            }
+
+        #seatDescription {
+            padding: 0px;
+        }
+
+            #seatDescription li {
+                vertical-align: middle;
+                list-style: none outside none;
+                padding-left: 35px;
+                height: 35px;
+                float: left;
+            }
+
+        #messages {
+            width: 650px;
+            height: 550px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        #usermessages {
+            width: 250px;
+            height: 450px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        #userlist {
+            width: 250px;
+            height: 400px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        ul.dual-align-list li {
+            display: block;
+            height: 45px;
+        }
+
+            ul.dual-align-list li div:first-child {
+                float: left;
+            }
+
+            ul.dual-align-list li div:nth-child(2) {
+                float: right;
+            }
+    </style>
+    <style type="text/css">
+        .chat {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .chat li {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px dotted #B3A9A9;
+            }
+
+        #memberList {
+            left:10px;
+        }
+
+        #pushPinn {
+            font-size: x-large;
+        }
+
+        #chatMessageWindowId {
+        }
+
+        #loginTaboptions > li a {
+            text-decoration: none;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+            color: yellow;
+        }
+
+
+        #categorytabs > li a:hover {
+            background-color: lightgrey;
+            text-decoration: none;
+        }
+
+        #categorytabs > li:active {
+            background-color: red;
+        }
+
+        /*#autoscrlone > .chat li:hover {
+            border: thin solid red;
+            background-color: #ccc;
+        }
+            Below Css statment is replacemenet of the Current Above Css , Is more Refine to Heighligth the Messages
+        */
+
+        #autoscrlone > .chat #chatListMessageId:hover {
+            border: thin solid red;
+            background-color: #ccc;
+        }
+        /*#autoscrlone > .chat.left> li:hover{
+            border: thick solid red;
+            background-color: #ccc;
+
+        }*/
+        #ListofMembers {
+            margin-top: 2px;
+        }
+
+            #ListofMembers > .chat li:hover {
+                background-color: #ccc; /* Dark grey background on mouse-over */
+            }
+
+        #searchMember:focus {
+            border: thick solid green;
+        }
+
+        #inputmessage:focus {
+            border: thick solid green;
+        }
+
+        #inputmessage:disabled {
+            border: thin solid green;
+        }
+        #inputmessageUser:focus{
+            border:thick solid yellow;
+        }
+        #inputmessageUser:disabled{
+            border:thin solid green;
+        }
+        #searchMessages:focus {
+            border: thick solid green;
+            background-color: gainsboro;
+        }
+
+        #autoscrlone > .chat li:last-child {
+            border: thin solid yellow;
+            font-size: large;
+        }
+
+        #btn-chat:enabled {
+            font-style: italic;
+        }
+
+        .commentMsgBorder {
+            border-left: solid 5px;
+            border-color: green;
+            text-align: left;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: cornflowerblue;
+            font-weight: bold;
+            white-space: pre-wrap; /* css-3 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            border-bottom: none;
+        }
+
+            .commentMsgBorder:first-letter {
+                text-transform: capitalize;
+            }
+
+            .commentMsgBorder::selection {
+                background-color: yellow;
+            }
+
+        .chat li.left .chat-body {
+            margin-left: 60px;
+        }
+
+        .chat li.right .chat-body {
+            margin-right: 60px;
+        }
+
+
+        .chat li .chat-body p {
+            margin: 0;
+            color: cornflowerblue;
+        }
+
+        .panel .slidedown .glyphicon, .chat .glyphicon {
+            margin-right: 5px;
+        }
+
+        .panel-body {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 650px;
+            width: auto;
+        }
+
+        div {
+            padding: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .panel-user {
+            overflow-y: scroll;
+            height: 690px;
+            margin-left: 15px;
+        }
+
+        .panel-FileList {
+            overflow-y: scroll;
+            height: 740px;
+        }
+
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #555;
+        }
+    </style>
+    <style>
+        .chip {
+            display: inline-block;
+            padding: 0 25px;
+            height: 50px;
+            font-size: 16px;
+            line-height: 50px;
+            border-radius: 25px;
+            background-color: #f1f1f1;
+        }
+
+            .chip img {
+                float: left;
+                margin: 0 10px 0 -25px;
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+
+        .blue {
+            color: green;
+        }
+
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+            .fileUpload input.upload {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+    </style>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .customButton {
+            width: 95px !important;
+        }
+
+        .icon-bar {
+            width: 70px;
+            background-color: #555;
+        }
+
+            .icon-bar a {
+                display: block;
+                text-align: center;
+                padding: 16px;
+                transition: all 0.3s ease;
+                color: white;
+                font-size: 25px;
+            }
+
+                .icon-bar a:hover {
+                    background-color: #000;
+                }
+
+        .active {
+            background-color: #4CAF50 !important;
+        }
+    </style>
+    <style>
+        .padding-0 {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .badge {
+            padding: 1px 9px 2px;
+            font-size: 12.025px;
+            font-weight: bold;
+            white-space: nowrap;
+            color: #ffffff;
+            background-color: #999999;
+            -webkit-border-radius: 9px;
+            -moz-border-radius: 9px;
+            border-radius: 9px;
+        }
+
+            .badge:hover {
+                color: #ffffff;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .badge-error {
+            background-color: #b94a48;
+        }
+
+            .badge-error:hover {
+                background-color: #953b39;
+            }
+
+        .badge-warning {
+            background-color: #f89406;
+        }
+
+            .badge-warning:hover {
+                background-color: #c67605;
+            }
+
+        .badge-success {
+            background-color: #468847;
+        }
+
+            .badge-success:hover {
+                background-color: #356635;
+            }
+
+        .badge-info {
+            background-color: #3a87ad;
+        }
+
+            .badge-info:hover {
+                background-color: #2d6987;
+            }
+
+        .badge-inverse {
+            background-color: #333333;
+        }
+
+            .badge-inverse:hover {
+                background-color: #1a1a1a;
+            }
+
+        #autoscrlone {
+            word-break: break-all;
+            text-align: justify;
+        }
+    </style>
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width: 60%;
+            border-radius: 5px;
+        }
+
+            .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+
+        img {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .container {
+            padding: 2px 16px;
+        }
+    </style>
+
+
+    <style>
+        #imageZoom {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            #imageZoom:hover {
+                opacity: 0.7;
+            }
+
+        img:hover {
+            cursor: pointer;
+        }
+        /* The Modal (background) */
+        .modalImage {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: no-display; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+
+        /* Modal Content (image) */
+        .modalImage-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* Caption of Modal Image */
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+
+
+
+
+        /* The Close Button */
+        .close {
+            position: absolute;
+            top: 65px;
+            right: 85px;
+            color: #f1f1f1;
+            font-size: 35px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #bbb;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .myclass {
+        }
+
+        #messageFormate {
+            border: 0;
+            background-color: transparent;
+        }
+    </style>
+
+    <style>
+        dropdown-pull-right {
+            float: right !important;
+            right: 0;
+            left: auto;
+        }
+
+        .dropdown-pull-right > .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        ul.dropdown-menu {
+            border-color: yellow;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: medium;
+        }
+
+            ul.dropdown-menu li a:hover {
+                background-color: yellowgreen;
+                display: block;
+            }
+
+        .online {
+            background-color: chartreuse;
+            width: 15px;
+            height: 15px;
+            border-radius: 58%;
+        }
+
+        .busy {
+            background-color: red;
+            width: 15px;
+            height: 15px;
+            border-radius: 58%;
+        }
+
+        .disturb {
+            background-color: darkorange;
+            width: 15px;
+            height: 15px;
+            border-radius: 58%;
+        }
+    </style>
+
+    <style>
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            background-color: #555;
+            min-width: 195px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: white;
+                padding: 16px;
+                text-decoration: none;
+                display: block;
+                float: left;
+                text-align: center;
+                transition: all 0.3s ease;
+                font-size: 20px;
+            }
+
+            .dropdown-content > span > a {
+                color: white;
+                padding: 16px;
+                text-decoration: none;
+                display: block;
+                float: left;
+                text-align: center;
+                transition: all 0.3s ease;
+                font-size: 20px;
+            }
+
+            .dropdown-content a:hover {
+                background-color: black;
+                color: yellow;
+            }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+    </style>
+    <style>
+        .customDropDownMenue {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtnmenue {
+            border: none;
+            cursor: pointer;
+        }
+
+        .customDropDownContent {
+            display: none;
+            position: absolute;
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 57px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+
+
+            .customDropDownContent > a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: right;
+                transition: all 0.3s ease;
+                font-size: 20px;
+            }
+
+            .customDropDownContent a:hover {
+                display: block;
+                font-family: Verdana;
+                background-color: darkgray;
+                color: red;
+            }
+
+        .customDropDownMenue:hover .customDropDownContent {
+            display: block;
+        }
+
+        .customDropDownMenue:hover .dropbtnmenue {
+            background-color: #3e8e41;
+        }
+    </style>
+    <style>
+        #outPopUp {
+            position: absolute;
+            width: 400px;
+            height: 250px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+            background: grey;
+        }
+    </style>
+    <link href="~/css/StyleSheet1.css" rel="stylesheet" />
+
+
+    <script>
+        $(document).ready(function () {
+            //$('ul').on('click', 'li .myclass', function () {
+            //    alert(3333);
+            //});
+            $('#memberList').hover(
+                function () {
+                    $(this).stop().animate(
+                      {
+                          //left: '0',
+                          left: '0px'
+
+                      },
+                      500
+
+                      ); // end animate
+                    $('#chatMessageWindowId').animate(
+                   {
+                       left: '0px',
+
+                   }, 500);
+                },
+            function () {
+
+            }
+
+            );
+            $('#pushPinn').click(function () {
+                var wid = $('#chatMessageWindowId').width();
+
+
+                $('#memberList').stop().animate(
+                    {
+                        left: '-292px'
+                    }, 500
+                    );
+                $('#chatMessageWindowId').animate(
+                    {
+                        left: '-290px',
+
+
+                    }, 500);
+            });
+            $('#inputmessage').on("keydown", function valueEnter(e) {
+                var text = $("#inputmessage").val();
+                var lines = text.split(/\r|\r\n|\n/);
+                var count = lines.length;
+                console.log(count); // Outputs 4
+
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 13 && e.shiftKey) {
+
+                    var hei = $('#inputmessage').css('height');
+                    var sc = this.scrollHeight;
+                    sc = (sc + 5) + "px";
+                    $(this).stop().animate(
+                          {
+                              //left: '0',
+                              height: sc
+
+                          },
+                          500
+
+                          ); // end animate
+                }
+                else if (code == 13) {
+                    $(this).stop().animate(
+                      {
+                          //left: '0',
+                          height: '46px' // This is standard hard coded height of text area
+
+                      },
+                      500
+
+                      ); // end animate
+                }
+                else {
+
+                    if (count > 1) {
+
+                        var scc = this.scrollHeight - count;
+                        $(this).stop().animate(
+                        {
+                            //left: '0',
+                            height: scc
+
+                        },
+                        500
+
+                        ); // end animate
+                    }
+                    else {
+                        $(this).stop().animate(
+                       {
+                           //left: '0',
+                           height: '46px' // This is standard hard coded height of text area
+
+                       },
+                       500
+
+                       ); // end animate
+                    }
+
+                }
+                // code to control the scroll of
+
+            });
+
+
+
+        });
+        // Tese statment is for the Admin Online Busy and Disturn Menue hover function
+    </script>
+
+</head>
+<!-- The Modal -->
+
+
+<div data-ng-controller="chatController">
+    <div id="myImageModel" class="modalImage">
+        <span ng-click="closeImageModel()" class="close">&times;</span>
+
+        <img class="modalImage-content" id="img01">
+        <div id="caption">
+
+
+        </div>
+    </div>
+
+
+
+
+    <div style="display:block" ng-show="user.userId==null" id="myLoginModel" class="modalImage">
+        <span ng-click="closeImageModel()" class="close">&times;</span>
+
+        <div class="panel panel-primary" id="outPopUp">
+            <div>
+
+                <ul id="loginTaboptions" class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">Log In </a></li>
+                    <li><a data-toggle="tab" href="#menu1">Register</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="btn btn-primary btn-block text-center">
+                            <h3>Authenticate User </h3>
+                        </div>
+                        <div>
+                            <form>
+                                <input maxlength="15" type="text" ng-model="register.userName" placeholder="Enter User Name" class="form-control" />
+                                <input maxlength="10" type="password" ng-model="register.password" placeholder="Enter User Password" class="form-control" />
+                                <button ng-disabled="register.userName.length==0 || register.userName==null || register.password.length==0 || register.password==null" ng-click="logUserInn()" class="btn btn-success btn-block">Click to Log Inn <span class="fa fa-users"></span> </button>
+
+                            </form>
+                            <div class="alert alert-warning">
+                                <strong><span class="glyphicon glyphicon-alert"></span> !</strong> {{register.message}}.
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="btn btn-primary btn-block text-center">
+                            <h3>Register User </h3>
+                        </div>
+                        <div>
+                            <form>
+                                <input maxlength="15" type="text" ng-model="register.userName" placeholder="Enter User Name" class="form-control" />
+                                <input maxlength="10" type="password" ng-model="register.password" placeholder="Enter User Password" class="form-control" />
+                                <input maxlength="10" type="password" ng-model="register.confirmpassword" placeholder="Enter Confirm Password" class="form-control" />
+
+                                <button ng-disabled="register.userName.length==0 || register.userName==null || register.password.length==0 || register.password==null || register.confirmpassword.length==0 || register.confirmpassword==null" ng-click="RegisterUserInn()" class="btn btn-success btn-block">Click to Register <span class="glyphicon glyphicon-bookmark"></span> </button>
+
+                            </form>
+                            <div class="alert alert-danger">
+                                <strong><span class="glyphicon glyphicon-alert"></span> !</strong> {{register.message}}.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    @*{{selectUser}}
+        <button class="btn btn-primary" ng-click="refresh()">Refresh Page <span class="glyphicon glyphicon-refresh"></span> </button>*@
+    <div class="row">
+        <div @*ng-show="selectUser==null"*@ class="col-lg-12 col-md-12">
+
+
+
+            <ul id="categorytabs" class="nav nav-tabs">
+
+                <li data-ng-repeat="opt in tabsOptions" ng-class="{active:opt.id==activeItem}">
+
+                    <a ng-click="tabSelect(opt)" href="#" class="btn btn-warning">
+                        <strong># {{opt.option}}</strong>
+                        <span ng-hide="opt.unread==0" class="fa fa-envelope" style="color:yellow"></span>
+                        <span class="badge badge-warning">{{opt.messagecount}}</span>
+                    </a>
+                </li>
+
+            </ul>
+            <audio autoplay controls>
+                <source src="http://newradio.chatroom.com.pk:9056/stream" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="memberList" ng-show="user.userId!=null" class="col-md-2 col-lg-2 col-sm-12 padding-0">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> <strong> CHANNEL MEMBERS</strong>
+                    <span id="pushPinn" class="glyphicon glyphicon-pushpin pull-right"></span>
+                    <input id="searchMember" type="text" class="form-control" ng-model="filterUser.name" placeholder="Search the User" />
+                </div>
+                <div id="ListofMembers" class="panel-user">
+                    <ul class="chat">
+                        <li class="left clearfix" ng-repeat="luser in users | filter:filterUser.name">
+
+                            <span ng-hide="luser.userId==user.userId" class="chat-img pull-left">
+                                @*<img ng-click="messageUser(luser)" src="~/Images/you.png" alt="User Avatar" class="img-circle">*@
+                                <img ng-src="{{luser.country}}" ng-click="messageUser(luser)" class="img-responsive" />
+
+                            </span>
+                            <span ng-show="luser.userId==user.userId" class="chat-img pull-left">
+                                <img src="~/Images/me.png" alt="User Avatar" class="img-responsive">
+                            </span>
+
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">{{luser.name}}</strong>
+
+
+
+                                    <div ng-show="luser.status!=null" class="pull-right text-muted">
+                                        <span ng-hide="luser.userId==user.userId" class="badge badge-success">{{luser.unread}}</span>
+
+                                        <span ng-hide="luser.userId==user.userId" class="glyphicon glyphicon-user blue"></span>
+                                        <div ng-hide="luser.userId!=user.userId" class="dropdown dropdown-pull-right">
+
+
+                                            <span class="glyphicon glyphicon-user blue"></span>
+                                            <button ng-show="luser.userId==user.userId && luser.activeStatus=='online'" class="btn btn-success btn-sm customButton dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> ONLINE</button>
+                                            <button ng-show="luser.userId==user.userId && luser.activeStatus=='busy'" class="btn btn-danger btn-sm customButton dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> BUSSY</button>
+                                            <button ng-show="luser.userId==user.userId && luser.activeStatus=='disturb'" class="btn btn-warning btn-sm customButton dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> DISTURB</button>
+                                            <button ng-show="luser.userId==user.userId && luser.activeStatus==null" class="btn btn-success btn-sm customButton dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> ONLINE</button>
+
+                                            <ul id="onlinebusy" class="dropdown-menu">
+                                                <li><a ng-click="changeStatus('online')" href="#"><i class="online pull-left fa-fw"></i>&nbsp;&nbsp;Online</a></li>
+                                                <li><a ng-click="changeStatus('busy')" href="#"><i class="busy pull-left fa-fw"></i>&nbsp;&nbsp; Busy</a></li>
+                                                <li><a ng-click="changeStatus('disturb')" href="#"><i class="disturb pull-left fa-fw"></i>&nbsp;&nbsp;Do Not Disturb</a></li>
+
+
+                                            </ul>
+
+                                        </div>
+                                        <button ng-show="luser.userId!=user.userId && luser.activeStatus=='online'" ng-click="messageUser(luser)" class="btn btn-success btn-sm customButton" data-toggle="tooltip" data-placement="top" title="{{luser.name}} Online">ONLINE</button>
+                                        <button ng-show="luser.userId!=user.userId && luser.activeStatus=='busy'" ng-click="messageUser(luser)" class="btn btn-danger btn-sm customButton" data-toggle="tooltip" data-placement="top" title="{{luser.name}} Online">BUSSY</button>
+                                        <button ng-show="luser.userId!=user.userId && luser.activeStatus=='disturb'" ng-click="messageUser(luser)" class="btn btn-warning btn-sm customButton" data-toggle="tooltip" data-placement="top" title="{{luser.name}} Online">DISTURB</button>
+                                        <button ng-show="luser.userId!=user.userId && luser.activeStatus==null" ng-click="messageUser(luser)" class="btn btn-success btn-sm customButton" data-toggle="tooltip" data-placement="top" title="{{luser.name}} Online">ONLINE</button>
+
+
+
+                                    </div>
+                                    <small ng-hide="luser.status!=null" class="pull-right text-muted">
+                                        <span class="badge badge-warning">{{luser.unread}}</span>
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        <button ng-hide="luser.userId==selectUser.userId" ng-click="messageUser(luser)" class="btn btn-danger btn-sm customButton" data-toggle="tooltip" data-placement="left" title="{{luser.name}} Offline" disabled>OFLINE</button>
+                                        <button ng-show="luser.userId==selectUser.userId" ng-click="messageUser(luser)" class="btn btn-warning btn-sm customButton" data-toggle="tooltip" data-placement="left" title="{{luser.name}} Offline" disabled>OFLINE</button>
+
+                                    </small>
+                                </div>
+
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div> @*// Col-3 colum ending*@
+        <div id="chatMessageWindowId" class="{{getChatWindowLength()}}">
+
+
+
+            <div ng-hide="messageWindow" class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat --
+                    <button class="btn btn-success">{{user.name}} <img src="~/Images/me.png" alt="User Avatar" class="img-circle"></button>
+
+
+                    <input id="searchMessages" type="text" class="form-control" ng-model="filter.msg" placeholder="Search the messages" />
+
+
+                </div>
+
+                <div id="autoscrlone" class="panel-body" scrolly="showMore()">
+                    <div id="loadmore"></div>
+                    <ul class="list-group chat" ng-repeat="(key,value) in messages | groupBy: 'time | date:medium'">
+                        <li class="list-group-item right clearfix">
+
+                            <p class="text-center">
+
+                                <button class="btn btn-success btn-block btn-lg">
+                                    <span class="glyphicon glyphicon-plus-sign pull-left"></span>
+                                    <span class="glyphicon glyphicon-plus-sign pull-right"></span>
+
+                                    <strong>{{key}}</strong>
+                                </button>
+                            </p>
+
+                        </li>
+
+                        <li id="chatListMessageId" class="list-group-item left clearfix" ng-repeat="comment in value | filter:filter.msg">
+
+                            <div ng-hide="comment.uid==user.userId">
+                                <span ng-hide="" class="chat-img pull-left">
+                                    <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+
+
+                                    <div class="header">
+                                        <strong class="primary-font">{{comment.name}}</strong> <small class="pull-right text-muted">
+                                            <span class="glyphicon glyphicon-time"></span>{{comment.time | date:'medium'}}
+                                        </small>
+                                    </div>
+                                    <div ng-switch on="comment.txtType">
+                                        <span ng-switch-when="imagetxt">
+
+                                            <img ng-click="ImageModel(comment.groupChatId)" id='{{comment.groupChatId}}' ng-src="~//Images//{{comment.msg}}" height="200" alt="User Avatar" class="img-rounded">
+
+                                        </span>
+                                        <span ng-switch-when="map">
+                                            <a target="_blank" href="{{getDynamicMapUrl(comment.msg)}}">
+                                                <img ng-src="{{getStaticMapurl(comment.msg)}}" />
+                                            </a>
+
+                                        </span>
+                                        <code>
+
+
+                                            <span ng-switch-default>
+                                                <span ng-switch on="comment.txtStatus">
+                                                    <span ng-switch-when="delete">
+                                                        <span style="font-style:italic">
+                                                            Message Removed ? Deleted
+                                                        </span>
+
+                                                    </span>
+                                                    <span ng-switch-default>
+
+                                                        <font size="5">
+                                                            {{comment.txtStatus}}
+                                                            {{comment.msg}}
+                                                        </font>
+                                                    </span>
+                                                </span>
+
+                                            </span>
+                                        </code>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div ng-show="comment.uid==user.userId">
+                                <span class="chat-img pull-right">
+                                    <img src="~/Images/me.png" alt="User Avatar" class="img-circle">
+
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <small class="text-muted">
+                                            <span class="glyphicon glyphicon-time"></span>{{comment.time | date:'medium'}}
+                                            <span class="dropdown">
+                                                <span class="dropbtn ">....</span>
+                                                <span class="dropdown-content" style="left:0;">
+                                                    <span ng-switch on="comment.txtStatus">
+                                                        <span ng-switch-when="delete">
+                                                            <a ng-click="undoMessage(comment.groupChatId)" href="#"><i class="fa fa-undo"></i></a>
+                                                        </span>
+                                                        <span ng-switch-default>
+                                                            <a ng-click="deleteMessage(comment.groupChatId)" href="#"><i class="fa fa-trash"></i></a>
+                                                        </span>
+                                                    </span>
+
+                                                    <a href="#"><i class="fa fa-paperclip"></i> </a>
+                                                    <a href="#"><i class="fa fa-info">&nbsp;</i></a>
+
+                                                    <span class="customDropDownMenue">
+                                                        <a class="dropbtnmenue">...</a>
+                                                        <span class="customDropDownContent" style="right:0">
+                                                            <a href="#"><i class="fa fa-home fa-fw"></i></a>
+                                                            <a href="#"><i class="fa fa-pencil fa-fw"></i></a>
+                                                            <a href="#"><i class="fa fa-envelope fa-fw"></i></a>
+
+                                                        </span>
+                                                    </span>
+
+
+                                                </span>
+                                            </span>
+                                        </small>
+                                        <strong class="pull-right primary-font">{{comment.name}}</strong>
+                                    </div>
+
+                                    <div ng-switch on="comment.txtType">
+
+                                        <span ng-switch-when="imagetxt">
+                                            <strong>File Uploaded</strong>
+                                            <button ng-click="ImageButton(comment.groupChatId)" class="btn btn-default" data-toggle="collapse" data-target="#{{comment.groupChatId}}drop">
+                                                <span id="{{comment.groupChatId}}Img" class="glyphicon glyphicon-arrow-right"></span>
+                                            </button>
+                                            @*The below line we added drop on the end if id to concatenate to make a new ID to avoid duplicate
+                                                It is Self Explinatory .. Then we assign each image with a id id=comment.groupChatId
+                                            *@
+
+                                            <div id="{{comment.groupChatId}}drop" class="collapse">
+                                                <img ng-click="ImageModel(comment.groupChatId)" id='{{comment.groupChatId}}' ng-src="~//Images//{{comment.msg}}" height="200" alt="User Avatar" class="img-rounded">
+                                            </div>
+                                            <a target="_blank" href="~//Images//{{comment.msg}}">{{comment.msg}}</a>
+                                        </span>
+                                        <span ng-switch-when="map">
+                                            <a target="_blank" href="{{getDynamicMapUrl(comment.msg)}}">
+                                                <img ng-src="{{getStaticMapurl(comment.msg)}}" />
+                                            </a>
+
+                                        </span>
+                                        <span ng-switch-default>
+                                            <span ng-switch on="comment.txtStatus">
+                                                <span ng-switch-when="delete">
+
+                                                    <span>
+                                                        <strike style="color:red">
+                                                            <strike><p class="commentMsgBorder">{{comment.msg}} <a href="#" ng-click="undoMessage(comment.groupChatId)" class="fa fa-undo"></a></p></strike>
+
+                                                        </strike>
+                                                    </span>
+
+                                                </span>
+
+                                                <span ng-switch-default>
+
+                                                    <p id="{{comment.groupChatId}}msg" class="commentMsgBorder">{{comment.msg}}  <a href="#" ng-click="deleteMessage(comment.groupChatId)" class="fa fa-trash"> </a></p>
+                                                </span>
+                                            </span>
+
+
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="panel-footer">
+
+                        <div ng-show="user.userId!=null" class="input-group">
+
+                            <span class="input-group-addon" id="basic-addon1">
+                                @@
+                            </span>
+
+                            <textarea rows="3" style="height:46px" dir="ltr" ng-disabled="inputMessageStatus" focus-on="focusMe" id="inputmessage" type="text" ng-model="message" class="form-control input-lg" ng-keypress="getEnter($event)" placeholder="Type your message here..."></textarea>
+
+                            <span class="input-group-btn">
+                                <button ng-disabled="message.length==0 || message==null" ng-click="postMessage()" class="btn btn-warning btn-lg" id="btn-chat">
+                                    Send
+                                </button>
+
+
+                                <button data-toggle="modal" data-target="#myModal" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus"></span>  </button>
+                                <button ng-click="myCurrentLocation()" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-map-marker"></span> </button>
+
+                            </span>
+
+                        </div>
+                        <div ng-hide="user.userId!=null">
+                            <div class="alert alert-danger text-center">
+                                <h3><strong>Info!</strong> To start Sending Messages Need to Log Inn ??</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div> @*// Scrolleable Window Ending*@
+
+            </div>
+            @*//------------------- Modal for Saving or uploading file to chat --------------*@
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Upload Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="well">
+
+                                <form novalidate name="f1" ng-submit="SaveFile()">
+                                    <div style="color: red">{{Message}}</div>
+                                    <table>
+                                        <tr>
+                                            <td>Select File : </td>
+                                            <td>
+                                                <input class="btn btn-primary" type="file" fileread="uploadme" name="file" accept="image/*" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
+                                                <span class="error" ng-show="(f1.file.$dirty || IsFormSubmitted) && f1.file.$error.required">Image required!</span>
+
+                                                <img ng-src="{{uploadme}}" width="200" height="200" alt="Image preview...">
+                                                <span class="error">{{FileInvalidMessage}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Description : </td>
+                                            <td>
+                                                <input type="text" name="uFileDescription" ng-model="FileDescription" class="form-control {{(IsFormSubmitted?'ng-dirty' + (f1.uFileDescription.$invalid?' ng-invalid':''):'')}}" autofocus />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button class="form-control btn btn-default" type="submit">
+                                                    Send Image
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            @*//---------------------------  Chat Window for Individual User ....................................*@
+            <div ng-show="messageWindow" class="panel panel-success">
+                @*<div class="panel-heading">
+
+                        <span class="glyphicon glyphicon-comment"></span> Chat Member --
+                        <button class="btn btn-primary">{{user.name}} <img src="~/Images/me.png" alt="User Avatar" class="img-circle"></button>
+                        with
+                        <button class="btn btn-success">
+                            {{selectUser.name}}
+                            <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                        </button>
+                        <input type="text" ng-model="filter.msg" class="form-control" placeholder="search ..." />
+                    </div>*@
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs">
+
+                        <li ng-repeat="luser in SelectChatUsers">
+                            <div class="btn btn-group">
+                                <button ng-click="messageUser(luser)" ng-hide="luser.userId==selectUser.userId" class="btn btn-success" href="#" ng-click="selectTab($index)">
+                                    {{luser.name}}
+                                    <i ng-show="luser.seen==false" style="color:yellow" class="fa fa-envelope"></i>
+                                </button>
+                                <button disabled ng-show="luser.userId==selectUser.userId" class="btn btn-warning" href="#" ng-click="selectTab($index)">
+                                    {{luser.name}}
+
+                                </button>
+                                <button ng-click="closeChatUser($index)" class="btn btn-default">X</button>
+                            </div>
+
+                        </li>
+
+                    </ul>
+                    <input type="text" ng-model="filter.msg" class="form-control" placeholder="search ..." />
+
+                </div>
+                <div id="autoscroll" class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix" ng-repeat="comment in selectUserMessages | filter:filter.msg">
+                            <div ng-hide="comment.uid==user.userId">
+                                <span ng-hide="" class="chat-img pull-left">
+                                    <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">{{comment.name}}</strong> <small class="pull-right text-muted">
+                                            <span class="glyphicon glyphicon-time"></span>{{comment.time | date:'medium'}}
+                                        </small>
+                                    </div>
+                                    <p>
+                                        <font size="5">
+                                            {{comment.msg}}
+                                        </font>
+                                    </p>
+                                </div>
+                            </div>
+                            <div ng-show="comment.uid==user.userId">
+                                <span class="chat-img pull-right">
+                                    <img src="~/Images/me.png" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{comment.time | date:'medium'}}</small>
+                                        <strong class="pull-right primary-font">{{comment.name}}</strong>
+                                    </div>
+                                    
+                                        <span class="text-warning">
+                                           <p class="commentMsgBorder"><strong> {{comment.msg}}</strong></p> 
+                                        </span>
+
+                                    
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                    <div class="panel-footer">
+                        <div ng-show="user.userId!=0" class="input-group">
+
+                            <input id="inputmessageUser" focus-on="focusMeUser" type="text" ng-keypress="getEnterUserChat($event)" ng-model="message" class="form-control input-lg" placeholder="Type your message here...">
+                            <span class="input-group-btn">
+                                <button ng-disabled="message.length==0 || message==null" ng-click="sendMessage()" class="btn btn-warning btn-lg" id="btn-chat">
+                                    Send Message
+                                </button>
+                                <button ng-click="returnToMain()" class="btn btn-primary btn-lg" id="btn-chat">
+                                    << Return to Main Chat Rooom
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div> @*//--------- Main  9 Colum Ending*@
+
+
+        <div ng-if='FileListToggle' class="col-lg-2 col-md-2 padding-0">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a title="Close"><i ng-click="CloseFileModal()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+                    <strong>File List</strong>
+                </div>
+                <div id="autoscroll" class="panel-FileList">
+                    <ul class="chat">
+                        <li class="left clearfix" ng-repeat="file in FileList">
+                            <div>
+                                @*<span ng-hide="" class="chat-img pull-left">
+                                        <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                    </span>*@
+                                <span class="chat-img pull-left">
+                                    <span class="glyphicon glyphicon-file"></span>
+
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+
+                                        <small class="pull-right text-muted">
+
+                                            <strong>
+                                                <span class="glyphicon glyphicon-save"></span>{{comment.time | date:'medium'}}
+                                            </strong>
+                                        </small>
+                                    </div>
+
+                                    <img hidden id='{{file.fileName}}' ng-src="~//Images//{{file.fileName}}" height="200" alt="User Avatar" class="img-rounded">
+
+                                    <span class="customDropDownMenue">
+                                        <a target="_blank" href="~//Images//{{file.fileName}}">{{file.fileName}}</a>
+                                        <span class="customDropDownContent" style="left:0">
+
+                                            <a ng-click="ImageModel(file.fileName)"><i class="fa fa-search fa-fw"></i></a>
+                                            <a href="#"><i class="fa fa-info fa-fw"></i></a>
+                                            <a ng-show="file.userId==user.userId" href="#"><i class="fa fa-trash fa-fw"></i></a>
+
+
+                                        </span>
+                                    </span>
+
+
+                                </div>
+                            </div>
+
+                        </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-if='MemberList' class="col-lg-2 col-md-2 padding-0">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a title="Close"><i ng-click="CloseMemberModal()" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+                    <strong>Group Members </strong>
+                </div>
+                <div id="autoscroll" class="panel-FileList">
+                    <ul class="chat">
+                        <li class="left clearfix" ng-repeat="newuser in users">
+                            <div>
+                                @*<span ng-hide="" class="chat-img pull-left">
+                                        <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                    </span>*@
+                                <span class="chat-img pull-left">
+
+
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+
+                                        <small class="pull-right text-muted">
+
+                                            <span class="fa fa-users"></span>
+                                        </small>
+                                    </div>
+                                    <div class="card">
+                                        <img src="~/Images/img_avatar3.png" alt="Avatar" style="width:100%">
+                                        <div class="container">
+                                            <h4><b>{{newuser.name}}</b></h4>
+                                            <div>
+                                                <span ng-show="newuser.status!=null" style="font-size:large" class="glyphicon glyphicon-user blue left"></span>
+                                                <span ng-hide="newuser.status!=null" style="font-size:large" class="glyphicon glyphicon-user left"></span>
+                                                <img ng-src="{{newuser.country}}" class="img-responsive right" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+                        </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-show="user.userId!=null" class="col-lg-1 col-sm-1 padding-0">
+
+            <div class="icon-bar">
+                <a class="active" href="#"><i class="fa fa-home"></i></a>
+                <a href="#" ng-click="Info()"><i class="fa fa-info"></i></a>
+                <a href="#"><i class="fa fa-paperclip"></i></a>
+                <a href="#" ng-click="UserList()"><i class="fa fa-users"></i></a>
+                <a href="#"><i class="fa fa-bell"></i></a>
+
+                <a href="#"><i class="fa fa-search"></i></a>
+                <a href="#"><i class="fa fa-envelope"></i></a>
+                <a href="#"><i class="fa fa-globe"></i></a>
+                <a href="#"><i class="fa fa-trash"></i></a>
+            </div>
+
+        </div>
+    </div> @*//------------ Main Row Ending*@
+
+
+</div>

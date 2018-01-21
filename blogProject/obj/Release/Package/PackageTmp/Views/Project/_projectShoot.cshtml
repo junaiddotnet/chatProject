@@ -1,0 +1,37 @@
+﻿@model blogProject.Models.projectViewModel
+<style>
+    .modal-dialog {
+    width: 100%;
+    height: 98%;
+    padding: 0;
+    margin: 0;
+}
+.modal-content {
+    
+    height: 98%;
+    min-height: 98%;
+    height: auto;
+    border-radius: 0;
+}
+</style>
+<div id=@Model.ProjectView.projectId class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title">@Model.ProjectView.projectName
+                 <button class="btn btn-success pull-right btn-lg" data-dismiss="modal">Retun To Main</button>
+
+                </h2>
+            </div>
+            <div class="modal-body">
+                
+
+                        <img src="~/Images/@Model.ProjectView.projectImg" alt="Alternate Text" class="img-rounded" />
+
+
+            </div>
+          
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

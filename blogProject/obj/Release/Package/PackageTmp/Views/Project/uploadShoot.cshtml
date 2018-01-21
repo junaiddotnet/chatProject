@@ -1,0 +1,25 @@
+﻿@model blogProject.Models.projectViewModel
+
+@if (Model.IsAuthorize)
+{
+    <div class="well">
+
+
+   
+            <div>
+               <label class="btn btn-primary btn-sm">File : @Model.ProjectView.projectImg</label>
+                @using (Html.BeginForm("saveProjectImg", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" name="ProjectId" value="@Model.ProjectView.projectId" />
+                    <div>
+                        <input class="btn btn-success btn-lg" type="file" name="file" />
+                        <input class="btn btn-primary btn-lg" type="submit" value="Upload" />
+
+                    </div>
+
+                    //----Image Form Part Ending
+                }
+            </div>
+
+    </div>
+}

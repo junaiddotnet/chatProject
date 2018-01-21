@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Junaid Pakistani Chat Master </title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    @*The below code is commented because it was related to Post Commnet chat which we have postPone at the moment*@
+    @*<script src="~/Scripts/jquery-1.6.4.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.0.3.js"></script>
+    <script src="/SignalR/hubs"></script>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/postChatter.js"></script>*@
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+         
+    
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand active" href=@Url.Action("Index", "Dashboard")>Dashboard <span class="glyphicon glyphicon-dashboard"></span></a>
+
+                <a class="navbar-brand active" href=@Url.Action("recentPosts", "Post")>Blog <span class="glyphicon glyphicon-pushpin"></span></a>
+               
+            </div>
+
+           @{ 
+               Html.RenderAction("LogInnandOut", "Nav");
+           }
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @*<li>
+                        <a href=@Url.Action("Profile","Account")>
+                            Profile <span class="glyphicon glyphicon-education"></span>
+                        </a>                    
+                    </li>*@
+                    <li>
+                        <a href=@Url.Action("ChatRoom","Chat")>Chat Room <span class="glyphicon glyphicon-user blue"></span><span class="glyphicon glyphicon-user blue"></span>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href=@Url.Action("Contact","Admin")>Contact <span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-user"></span>
+                        </a>
+                     </li>
+                    @*<li>
+                        <a href=@Url.Action("Index","Podcast")>
+                            Podcast <span class="glyphicon glyphicon-record"></span>
+                        </a>
+                    </li>*@
+                    @*<li>
+                        <a href=@Url.Action("recentProject","Project") >Projects <span class="glyphicon glyphicon-bookmark"></span> </a>
+
+                    </li>*@
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-9">
+                <div>
+                    @RenderBody()
+                </div>
+               
+            </div>
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-3">
+                <!-- Blog Search Well -->
+                <div class="well">
+                    <h4>Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /.input-group -->
+                </div>
+
+                <!-- Blog Categories Well -->
+                
+                @{ 
+                    Html.RenderAction("postFavourite", "Nav");
+                }
+               
+                  @{
+                      Html.RenderAction("postCategory", "Nav");
+                    }
+                    
+                    <!-- /.row -->
+                
+                
+                    @{
+                        Html.RenderAction("postList", "Nav");
+                    }
+
+                    <!-- /.row -->
+               
+                @*<div class="well">*@
+                    @{
+                        Html.RenderAction("recentComments", "Nav");
+                    }
+
+                    <!-- /.row -->
+                @*</div>*@
+
+              
+                    @{
+                        Html.RenderAction("archiveList", "Nav");
+                    }
+
+                    <!-- /.row -->
+                
+                <!-- Side Widget Well -->
+                <div class="well">
+                    <h4>Note</h4>
+                    <p>
+                        This blog is for education purpose only , anything on tis blog is feel free to use ..
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <hr>
+        <!-- Footer -->
+        <footer>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; JunniDotNet 2016</p>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </footer>
+    </div>
+    <!-- /.container -->
+    <!-- jQuery -->
+    <script src="~/js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/js/bootstrap.min.js"></script>
+</body>
+</html>
+

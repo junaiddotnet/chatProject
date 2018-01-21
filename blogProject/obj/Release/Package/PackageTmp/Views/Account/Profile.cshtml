@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="panel-body">
+
+  
+    <h1 class="page-header">
+        Junaid Mahmood
+        <small> Profile <span class="glyphicon glyphicon-education"></span></small>
+
+    </h1>
+    <button class="btn btn-primary btn-lg disabled">
+        Curriculum vitae
+    </button>
+    <div class="well">
+        @{
+            Html.RenderAction("CvView", "Account");
+        }
+
+    </div>
+    <label></label>
+    
+    <button class="btn btn-primary btn-lg disabled btn-block">
+        Summery
+    </button>
+    <div class="well">
+        Hands-on experience of relational databases including SQL Server
+        Strong understanding of software requirements and functional specifications.Strong grip on Microsoft Techonologies with
+        Excellent communication and interpersonal skills, multitasking ability and a good team player
+
+    </div>
+    <label></label>
+    <button class="btn btn-primary btn-lg disabled">
+        Personel Projects Worked
+    </button>
+    <div class="well">
+        <ul>
+            <li>
+                <label>Personel Asp.net Mvc personel Blog - </label>
+                <font size="5"><a target="_blank" href="http://www.junaidnet.co.uk">www.junaidnet.co.uk</a></font>
+            </li>
+            <li>
+                <label>Check In & Out School System -</label>
+                <font size="5">
+                    <a target="_blank" href="http://checkersystem.azurewebsites.net/home">www.checkersystem.azurewebsites.net/home</a>
+
+                </font>
+
+            </li>
+            <li>
+                <label>Chatting Application</label>
+                <font size="5">
+                    <a target="_blank" href="http://www.junaidnet.co.uk/Chat/ChatRoom">www.junaidnet.co.uk/Chat/ChatRoom</a>
+
+                </font>
+
+            </li>
+        </ul>
+    </div>
+    <label></label>
+    <button class="btn btn-primary btn-lg disabled">
+        Education
+    </button>
+    <div class="well">
+        <div class="row">
+            <div class="col-lg-3"><label>Sep 2008 – January 2010</label></div>
+            <div class="col-lg-8">Masters of Software Engineering Kingston University London </div>
+        </div>
+        
+        
+
+        
+    </div>
+    <label></label>
+    <button class="btn btn-primary btn-lg disabled">
+        Techinical Skills
+    </button>
+    <div class="well">
+        <div class="row">
+            <div class="col-lg-3"><label>Computer Languages & Applications</label></div>
+            <div class="col-lg-8">VB.NET, ASP.NET, ASP.NET MVC C Sharp , C++ , PHP </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3"><label>
+                                      Tools & Technologies</label></div>
+            <div class="col-lg-8"> Asp.net , C # , Asp.net MVC , SignalR , Entity Framework , Ninject , AnjularJS , JQuery </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <label>
+                    Databases
+                </label>
+            </div>
+            <div class="col-lg-8">Microsoft SQL Server 2008/2005, MS Access, My SQL </div>
+        </div>
+    </div>
+    <label></label>
+    <button class="btn btn-primary btn-lg disabled">
+        Experience
+    </button>
+    <div class="well">
+       Thee year of software and web development Experience..
+    </div>
+ 
+</div>
+

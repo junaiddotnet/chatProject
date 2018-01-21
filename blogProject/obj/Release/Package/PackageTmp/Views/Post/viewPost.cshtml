@@ -1,0 +1,202 @@
+﻿@model blogProject.Models.postdetailViewMode
+
+@{
+    ViewBag.Title = "viewPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .blue {
+        color: green;
+    }
+
+    .media:hover {
+    }
+
+    .commentMsgBorder {
+        border-left: solid 5px;
+        border-color: green;
+        text-align: justify;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: cornflowerblue;
+        font-weight: bold;
+        white-space: pre-wrap; /* css-3 */
+        word-wrap: break-word; /* Internet Explorer 5.5+ */
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="panel-body">
+            <h2 class="page-header">
+                <i class="label label-primary">
+                    @Model.postDetails.postName
+                </i>
+
+
+            </h2>
+
+            <span class="label label-danger">
+                @Model.postDetails.comments.Count()
+                comments <span class="glyphicon glyphicon-pencil"></span>
+            </span>|
+            <span class="label label-primary">
+                @Model.postDetails.categorie.categoryName
+                Category <span class="glyphicon glyphicon-bookmark"></span>
+            </span>
+            @{ 
+                var statmentControl = false;
+            }
+            @*Below Statment first Authenticate that user is loged In or not*@
+            @if (Model.currentUser.userId != 0 && Model.postDetails.favPosts.Count > 0)
+            {
+                foreach (var fav in Model.postDetails.favPosts.Where(c => c.userId == Model.currentUser.userId))
+                {
+                    if (fav.postId == Model.postDetails.postId && fav.userId == Model.currentUser.userId)
+                    { 
+                        <div>
+                            <font size="5">
+                                <a title="Remove from Favourite" href="@Url.Action("RemoveFromFavourite", "Post", new { postId = Model.postDetails.postId,userId=Model.currentUser.userId })"><i class="fa fa-heart"></i></a>
+                            </font>
+                        </div>
+                        statmentControl = true;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            else if (Model.currentUser.userId != 0 && Model.postDetails.favPosts.Count <= 0)
+            {
+
+                <div>
+                    <font size="5">
+                        <a title="Add to Favourite" href="@Url.Action("addToFavourite", "Post", new { postId = Model.postDetails.postId,userId=Model.currentUser.userId })"><i class="fa fa-heart-o"></i></a>
+                    </font>
+                </div>
+
+            }
+            @if (Model.currentUser.userId != 0 && Model.postDetails.favPosts.Count > 0 && statmentControl == false)
+            {
+                <div>
+                    <font size="5">
+                        <a title="Add to Favourite" href="@Url.Action("addToFavourite", "Post", new { postId = Model.postDetails.postId,userId=Model.currentUser.userId })"><i class="fa fa-heart-o"></i></a>
+                    </font>
+                </div>
+            }
+
+            <!-- First Blog Post -->
+
+            <p class="lead">
+                by <a href="#myModal" data-toggle="modal">Admin <span class="glyphicon glyphicon-user"> </span></a>
+
+            </p>
+            @*The below code is chat Related to Post and now commented at the moment until further decesion When to Start Agian This portion*@
+            @*@{
+                    Html.RenderAction("postChat", "Chat", new {postId=Model.postDetails.postId });
+                }*@
+            <!-- Button trigger modal -->
+            @*<div data-ng-controller="postController">
+                </div>*@
+
+
+
+            <p><span class="glyphicon glyphicon-time"></span><strong> Posted on @Model.postDetails.createDate.ToString("dd-MMMM-yyyy")</strong></p>
+            <div>
+
+            </div>
+            <article>
+                <p>
+                    @Html.Raw(@Model.postDetails.postText)
+                </p>
+            </article>
+
+            @if (TempData["newComment"] != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    <strong>Welcome!</strong>
+                    @TempData["newComment"].ToString()
+                </div>
+
+            }
+            @*Be The first to Comment if no comment on this post*@
+            @if (Model.postDetails.comments.Count <= 0)
+            {
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h3>Welcome</h3> </div>
+                    <div class="panel-body"><h4>Be the first one to comment on this Post</h4></div>
+                </div>
+            }
+
+            <!-- Comments Form -->
+            @{
+                Html.RenderAction("leaveComment", "Nav", new { postId = Model.postDetails.postId, postName = Model.postDetails.postName });
+            }
+            <!-- Comments List -->
+
+            @foreach (var comment in Model.postDetails.comments.OrderByDescending(j => j.commentDate))
+            {
+
+                if (comment.commentId == 2)
+                {
+                    <div class="media">
+
+                        <a class="pull-left" href="#">
+                            <img class="media-object" src="http://placehold.it/64x64" alt="">
+                        </a>
+                        <div class="well">
+                            <h4 class="media-heading">
+                                User <span class="glyphicon glyphicon-user"></span>
+                                <small>@comment.commentDate</small>
+                            </h4>
+                            <p class="commentMsgBorder">@Html.Raw(@comment.commentTxt.ToString())</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="media">
+
+                        <a class="pull-left" href="#">
+                            @if (Model.currentUser.userId == comment.userId)
+                            {
+                                <img class="img-circle" src="~/Images/me.png" alt="">
+                            }
+                            else
+                            {
+                                <img class="img-circle" src="~/Images/you.png" alt="">
+                            }
+
+                        </a>
+                        @*<div class="media-body">*@
+                        <div class="media-heading">
+                            @if (Model.currentUser.userId == comment.userId)
+                            {
+                                <label>@comment.user.userName</label>  <span class="glyphicon glyphicon-user blue"></span>
+                            }
+                            else
+                            {
+                                <label>@comment.user.userName</label>  <span class="glyphicon glyphicon-user"></span>
+                            }
+                            <small>@comment.commentDate.ToString("dd-MMMM-yyyy")</small>
+                        </div>
+                        <div class="media-body">
+                            <p class="commentMsgBorder">@Html.Raw(@comment.commentTxt.ToString())</p>
+                            @if (Model.currentUser.userId == comment.userId)
+                            {
+                                <a title="Delete My Comment" href="@Url.Action("delComment","Post",new {commentId=comment.commentId,url=Request.RawUrl })"><i class="fa fa-trash"></i></a>
+                            }
+                        </div>
+
+                    </div>
+                    @*</div>*@
+                }
+
+            } @*//-- comment for loop ending*@
+
+
+        </div>
+    </div>  @*// colum ending*@
+
+</div> @*// Row ending*@  

@@ -1,0 +1,35 @@
+﻿@model blogProject.Models.postViewModel
+<style>
+   #postList>li:hover{
+        border:thin solid green;
+        text-decoration:none;
+        background-color:lightgrey;
+    }
+  
+</style>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="@Url.Action("recentPosts", "Post")" class="btn btn-primary" >Recent Posts <span class="glyphicon glyphicon-comment"></span></a>
+       
+    </div>
+
+    
+        <ul id="postList" class="list-group">
+            @foreach (var post in Model.posts)
+            {
+                <li class="list-group-item">
+                    <span class="badge">@post.comments.Count() <span class="glyphicon glyphicon-comment"></span></span>
+                   @Html.RouteLink(post.postName,
+                  new {
+                      controller ="Post",
+                      action ="viewPost",
+                      postId = post.postId
+
+                  })
+                </li>
+
+            } @*foreach loop ending*@
+           
+        </ul>
+</div>
+

@@ -1,0 +1,62 @@
+﻿@model blogProject.Models.postViewModel
+
+@{
+    ViewBag.Title = "postList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel-body">
+    <h1 class="page-header">
+       Top Recent Posts 
+        <small> 5 </small>
+    </h1>
+    @if (Model.posts.Count() <= 0)
+    {
+        <h2>No Post Added In This Month</h2>
+    }
+    <!-- First Blog Post -->
+    @foreach (var p in Model.posts)
+    {
+        <h2>
+            @Html.RouteLink(@p.postName, new
+       {
+           controller = "Post",
+           action = "viewPost",
+           postId = p.postId
+       })
+            <span class="label label-danger">
+                @p.comments.Count()
+                comments
+            </span>
+        </h2>
+        <p class="lead">
+            by <a href="index.php">Admin <span class="glyphicon glyphicon-user"></span></a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on @p.createDate.ToString()</p>
+        <p >
+            @Html.Raw(p.postText)
+        </p>
+        @Html.RouteLink("Read more..", new
+   {
+       controller = "Post",
+       action = "viewPost",
+       postId = p.postId
+   },
+             new
+             {
+                 @class = "btn btn-primary"
+             }
+   )
+        <hr>
+    } @*// for loop ending*@
+
+    <!-- Pager -->
+    <ul class="pager">
+        <li class="previous">
+            <a href="#">&larr; Older</a>
+        </li>
+        <li class="next">
+            <a href="#">Newer &rarr;</a>
+        </li>
+    </ul>
+</div>

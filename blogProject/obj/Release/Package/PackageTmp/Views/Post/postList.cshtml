@@ -1,0 +1,71 @@
+﻿@model blogProject.Models.categoryPostsViewModel
+
+@{
+    ViewBag.Title = "postList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+        <div class="panel-body">
+            <h1 class="page-header">
+                @Model.postCategory
+                <small> list of posts .. </small>
+            </h1>
+            @if (Model.posts.Count() <= 0)
+            {
+                <div class="panel panel-danger">
+                    <div class="panel-heading"><h4>Post Search Error <span class="glyphicon glyphicon-question-sign"></span> </h4></div>
+                    <div class="panel-body">No Post Added for <label class="btn-danger"> @Model.postCategory</label></div>
+                </div>
+                
+            }
+            <!-- First Blog Post -->
+            @foreach (var p in Model.posts)
+            {
+                <div class="row">
+                    <div class="col-lg-12">
+                <h4>
+                    @Html.RouteLink(@p.postName, new
+                       {
+                           controller = "Post",
+                           action = "viewPost",
+                           postId = p.postId
+                       })
+                    <span class="label label-danger">
+                        @p.comments.Count()
+                        comments <span class="glyphicon glyphicon-pencil"></span>
+                    </span>
+                </h4>
+                <p class="lead">
+                    by <a href="index.php">Admin <span class="glyphicon glyphicon-user"></span></a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on @p.createDate.ToString()</p>
+                <p>
+                  @Html.Raw(@p.postText)
+                 @*@Html.Raw(p.postText.Substring(0, (p.postText.Length)))*@
+                </p>
+                @Html.RouteLink("Read more..", new
+                {
+                    controller = "Post",
+                    action = "viewPost",
+                    postId = p.postId
+                },
+                             new
+                             {
+                                 @class = "btn btn-primary"
+                             }
+                   )
+                      </div>
+                </div>
+            } @*// for loop ending*@
+
+            <!-- Pager -->
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#">&larr; Older</a>
+                </li>
+                <li class="next">
+                    <a href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+        </div>
+    

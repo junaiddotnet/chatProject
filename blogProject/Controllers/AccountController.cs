@@ -13,8 +13,8 @@ using System.Web.Security;
 namespace blogProject.Controllers
 {
     public class AccountController : Controller
-    {           
-        // GET: Account    
+    {             
+        // GET: Ac count      
         private static string SessionKey = "userId";
         private IuserRepository repository;
         private IpostRepository postRepository;

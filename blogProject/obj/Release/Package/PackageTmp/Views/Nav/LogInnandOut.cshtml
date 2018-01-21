@@ -1,0 +1,26 @@
+﻿@model blogProject.Models.LoguserViewModel
+<div class="top-menu">
+    <ul class="nav pull-right top-menu">
+        <li>
+          
+            @if (Model.userName != null)
+            {
+                <div class="input-group">
+                    <a href="@Url.Action("LogOut","Account", new {returnUrl=Request.RawUrl })" class="btn btn-success btn-lg active"><strong>Log Out:</strong>  @Model.userName <span class="glyphicon glyphicon-user"></span></a>
+                    <a href="@Url.Action("myProfile","Account", new {returnUrl=Request.RawUrl })" class="btn btn-success btn-lg active"><strong>My Profile</strong>  <span class="glyphicon glyphicon-info-sign"></span></a>
+
+                </div>
+
+
+            }
+            else
+            {
+                <a href="@Url.Action("LogPagee","Account", new {returnUrl=Request.RawUrl })" class="btn btn-primary btn-lg active">Log Inn <span class="glyphicon glyphicon-user"></span></a>
+
+            }
+
+        </li>
+        
+
+    </ul>
+</div>
