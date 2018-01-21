@@ -1,0 +1,37 @@
+﻿@model blogProject.Models.leaveCommentModel
+ <style>
+     #leaveCommentArea:focus{
+         border:thick solid green;
+     }
+ </style>
+  @if (Model.loged)
+    {
+        <div class="well">
+            <h4><strong>Comment</strong> <span class="glyphicon glyphicon-pencil"></span> </h4>
+            @using (Html.BeginForm("postComment", "Post"))
+            {
+
+                <div class="form-group">
+                    <input  type="hidden" name="postId" value="@Model.postId" />
+                    <input type="hidden" name="postName" value="@Model.postName" />
+                    <textarea id="leaveCommentArea" name="commenttext" class="form-control input-lg" rows="3" required autofocus></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Leave Comment <span class="glyphicon glyphicon-pencil"></span> </button>
+
+            }
+        </div>
+    }
+    else
+    {
+        <div class="well">
+            
+            <div class="alert alert-success" role="alert">
+                <strong>Alert!</strong><h4> To Leave a Comment: SignInn </h4>
+            </div>
+                <a href="@Url.Action("LogPagee","Account", new {returnUrl=Request.RawUrl })" class="btn btn-primary btn-lg">Sign In <span class="glyphicon glyphicon-user"></span></a>
+
+            </div>
+
+    }
+
+

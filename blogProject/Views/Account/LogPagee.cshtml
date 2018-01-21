@@ -1,0 +1,100 @@
+﻿@model BlogDal.user
+@{
+    ViewBag.Title = "LogPagee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    input:focus{
+        border:thick solid green;
+    }
+</style>
+<h2>Log Inn System</h2>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        <h2>Log Inn <span class="glyphicon glyphicon-user"></span></h2> 
+        </div>
+        
+        <div class="panel-body">
+           
+            
+                <div class="row">
+                    <div class="col-md-5 col-lg-5">
+                        @if (ViewBag.invalid != null)
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Warning!</strong>
+                                @ViewBag.invalid
+                            </div>
+                        
+                        }
+                      @using (Html.BeginForm("SignIn","Account"))
+                      {
+                          <label>User</label>
+                          @Html.TextBoxFor(a => a.userName, new { @class = "form-control input-lg ", required="true" })
+                          <label>Password</label>
+                          @Html.TextBoxFor(a => a.password, new { @class = "form-control input-lg", required="true",type="password" });
+                        <input  type="text" hidden name="returnUrl" value=@ViewBag.returnUrl />
+                        <label>Code:</label>
+                        <del>
+                            @TempData["keyCode"].ToString()
+                        </del>
+                       
+                        <input type="hidden" name="keyCode" value= @TempData["keyCode"]  />
+
+                        <div class="well">
+                           
+                            @Html.TextBoxFor(a => a.confirmKeyCode, new { @class = "form-control input-lg", required = "true" })
+
+
+                        </div>
+                        <hr />
+                        <button type="submit" class="btn btn-primary btn-lg btn-block"> Click to Log <span class="glyphicon glyphicon-user"></span></button>
+                        }
+                    </div>
+                    <div class="col-md-7 col-lg-7">
+                       
+                       
+                        
+                        @if (ViewBag.alreadyuser != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Warning!</strong>
+                                @ViewBag.alreadyuser
+                            </div>
+                           
+                        }
+                        @using (Html.BeginForm("Register", "Account"))
+                        {
+                            <label>User</label>
+                            @Html.TextBoxFor(a => a.userName, new { @class = "form-control input-lg", required = "true" })
+                            <label>Password</label>
+                            @Html.TextBoxFor(a => a.password, new { @class = "form-control input-lg", required = "true" });
+                            <label>Confirm Password</label>
+                            @Html.TextBoxFor(a => a.confirmPassword, new { @class = "form-control input-lg", required = "true" });
+
+                            <input type="text" hidden name="returnUrl" value=@ViewBag.returnUrl />
+
+                            <label>Code:</label>
+                            <del>
+                                @TempData["keyCode"].ToString()
+                            </del>
+                            <input type="hidden" name="keyCode" value=@TempData["keyCode"] />
+                            <div class="well">
+
+                                @Html.TextBoxFor(a => a.confirmKeyCode, new { @class = "form-control", required = "true" })
+
+                            </div>
+                            <hr />
+                            <button type="submit" class="btn btn-success btn-lg btn-block"> Click to Register <span class="glyphicon glyphicon-log-in"></span></button>
+                        }
+                    </div>
+
+                </div>
+
+        </div>
+    </div>
+
+
+
+

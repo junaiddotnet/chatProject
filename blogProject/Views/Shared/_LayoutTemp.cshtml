@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="~/css/bootstrap-theme.min.css" rel="stylesheet" />*@
+    <!-- Custom CSS -->
+    <link href="~/css/blog-home.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @*<script src="~/Scripts/jquery-1.6.4.js"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.0.3.js"></script>
+    <script src="/SignalR/hubs"></script>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/App.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBEYkKE75U_1F_jGA6TgvAQ4Stv-5K0tF8"></script>
+
+
+
+    <title>@ViewBag.Title</title>
+</head>
+<body data-ng-app="chat-app">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href=@Url.Action("Index", "Dashboard")>Dashboard <span class="glyphicon glyphicon-dashboard"></span></a>
+
+                @*<a class="navbar-brand" href=@Url.Action("recentPosts", "Post")>Blog <span class="glyphicon glyphicon-pushpin"></span></a>*@
+            </div>
+            @{
+                Html.RenderAction("LogInnandOut", "Nav");
+            }
+            @*<div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href=@Url.Action("Profile","Account")>
+                            Profile <span class="glyphicon glyphicon-education"></span>
+                        </a>
+                    </li>
+                    <li>
+                        
+                        <a href=@Url.Action("ChatRoom","Chat")>
+                            Chat Room <span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-user"></span>
+                        </a>
+                    
+                    </li>
+                    <li>
+                        <a href=@Url.Action("Contact","Admin")>
+                            Contact
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=@Url.Action("Index","Podcast")>
+                            Podcast <span class="glyphicon glyphicon-record"></span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>*@
+        </div>
+    </div>
+
+
+    
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - JunniDotNet</p>
+        </footer>
+    
+</body>
+</html>

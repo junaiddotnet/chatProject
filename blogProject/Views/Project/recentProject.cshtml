@@ -1,0 +1,56 @@
+﻿@model blogProject.Models.projectListViewModel
+
+@{
+    ViewBag.Title = "postList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel-body">
+    <h1 class="page-header">
+        Top Project
+        <small> 5 </small>
+    </h1>
+    @if (Model.projectList.Count() <= 0)
+    {
+        <h2>Project Added In This Month</h2>
+    }
+    <!-- First Blog Post -->
+    @foreach (var p in Model.projectList)
+    {
+        <h2>
+            @Html.RouteLink(@p.projectName, new
+       {
+           controller = "Post",
+           action = "viewPost",
+           postId = p.projectId
+       })
+            @*<span class="label label-danger">
+                @p.comments.Count()
+                comments
+            </span>*@
+        </h2>
+        <p class="lead">
+            by <a href="index.php">Admin <span class="glyphicon glyphicon-user"></span></a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on @p.createDate.ToString()</p>
+        <p>
+            @Html.Raw(p.projectDescription)
+        </p>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#@p.projectId">View Shots</button>
+
+        Html.RenderAction("projectShoot","Project", p);
+        Html.RenderAction("uploadShoot", "Project", p);
+          <hr>
+            } @*// for loop ending*@
+
+   
+    <!-- Pager -->
+    <ul class="pager">
+        <li class="previous">
+            <a href="#">&larr; Older</a>
+        </li>
+        <li class="next">
+            <a href="#">Newer &rarr;</a>
+        </li>
+    </ul>
+</div>

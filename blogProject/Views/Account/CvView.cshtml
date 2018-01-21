@@ -1,0 +1,56 @@
+﻿@model blogProject.Models.cvViewModel
+    <table class="table table-hover">
+        <tr>
+            <th>
+                File Name
+            </th>
+            <th>
+                Download
+            </th>
+          @if (Model.IsAuthorize)
+          {
+            <th>
+                Action
+            </th>
+          }
+            
+        </tr>
+        
+
+        
+        @foreach (var file in Model.fileList)
+        {
+            <tr>
+                <td>
+                    @file.ToString()
+                </td>
+                <td>
+                    @Html.ActionLink(file.ToString(),"downloadCV",new {fileName=file.ToString() })
+                </td>
+                @if (Model.IsAuthorize)
+                {
+                    <td>
+                        @Html.ActionLink("Delete", "deleteFile", new { fileName = file.ToString() })
+
+                    </td>
+                }
+                
+            </tr>
+           
+        }
+    </table>
+@if (Model.IsAuthorize)
+{
+    <div>
+        @using (Html.BeginForm("saveCv", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div>
+                Upload new File : <input class="btn btn-success" type="file" name="file" />
+            </div>
+
+            //----Image Form Part Ending
+            <input class="btn btn-primary" type="submit" value="Save" />
+        }
+    </div>
+}
+

@@ -1,0 +1,339 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<head>
+    <title>Index</title>
+
+    <style type="text/css">
+        #holder {
+            height: 200px;
+            background-color: #F5F5F5;
+            border: 1px solid #A4A4A4;
+            margin-left: 10px;
+        }
+
+        #place {
+            position: relative;
+            margin: 7px;
+        }
+
+            #place a {
+                font-size: 0.6em;
+            }
+
+            #place li {
+                list-style: none outside none;
+                position: absolute;
+            }
+
+                #place li:hover {
+                    background-color: yellow;
+                }
+
+            #place .seat {
+                background-image: url('../../images/available_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .selectedSeat {
+                background-image: url('../../images/booked_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .selectingSeat {
+                background-image: url('../../images/selected_seat_img.gif');
+                height: 33px;
+                width: 33px;
+                display: block;
+            }
+
+            #place .row-3, #place .row-4 {
+                margin-top: 10px;
+            }
+
+        #seatDescription {
+            padding: 0px;
+        }
+
+            #seatDescription li {
+                vertical-align: middle;
+                list-style: none outside none;
+                padding-left: 35px;
+                height: 35px;
+                float: left;
+            }
+
+        #messages {
+            width: 650px;
+            height: 550px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        #usermessages {
+            width: 250px;
+            height: 450px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        #userlist {
+            width: 250px;
+            height: 400px;
+            padding: 0px;
+            background-color: #eeeeee;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        ul.dual-align-list li {
+            display: block;
+            height: 45px;
+        }
+
+            ul.dual-align-list li div:first-child {
+                float: left;
+            }
+
+            ul.dual-align-list li div:nth-child(2) {
+                float: right;
+            }
+    </style>
+    <style type="text/css">
+        .chat {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .chat li {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px dotted #B3A9A9;
+            }
+
+                .chat li.left .chat-body {
+                    margin-left: 60px;
+                }
+
+                .chat li.right .chat-body {
+                    margin-right: 60px;
+                }
+
+
+                .chat li .chat-body p {
+                    margin: 0;
+                    color: #777777;
+                }
+
+            .panel .slidedown .glyphicon, .chat .glyphicon {
+                margin-right: 5px;
+            }
+
+        .panel-body {
+            overflow-y: scroll;
+            height: 300px;
+            overflow: scroll;
+        }
+
+        .panel-user {
+            overflow-y: scroll;
+            height: 450px;
+        }
+
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #555;
+        }
+    </style>
+    <style>
+        .chip {
+            display: inline-block;
+            padding: 0 25px;
+            height: 50px;
+            font-size: 16px;
+            line-height: 50px;
+            border-radius: 25px;
+            background-color: #f1f1f1;
+        }
+
+            .chip img {
+                float: left;
+                margin: 0 10px 0 -25px;
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+    </style>
+
+    <style>
+        .blue {
+    color: green;
+}
+    </style>
+</head>
+
+<div data-ng-controller="dashBoard">
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+
+            <div class="panel panel-success">
+              
+                <div class="panel-heading">
+                    <h3>Live update for <strong>[Posts]</strong> Comments <span class="glyphicon glyphicon-comment"></span>
+                    </h3>
+                    <button class="btn btn-primary" ng-click="refresh()">refresh</button>
+
+                </div>
+                <div id="autoscroll" class="panel-body">
+                    <ul class="chat">
+                        <li  class="left clearfix" ng-repeat="comment in recentComments">
+                            <div>
+                                @*<span ng-hide="" class="chat-img pull-left">
+                                    <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                </span>*@
+                                <span class="chat-img pull-left chip"  >
+                                    @*<img src="~/Images/img_avatar3.png" class="img-circle" alt="Person" width="96" height="96">*@
+                                    <img src="~/Images/aa.jpg" class="img-circle" alt="Person" width="96" height="96">
+
+                                    <strong>{{comment.userName}}</strong> 
+                                    
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">
+                                        <a ng-href="@Url.Content("~/Post/viewPost/")?postId={{comment.postId}}">{{comment.postName}}</a>
+                                         @*<a ng-href ="@Url.Action("{{comment.postId }}","Post")" >{{comment.postName}}</a>*@
+                                        
+                                        </strong> 
+                                        <small class="pull-right text-muted">
+                                            {{comment.commentDate.month}}
+                                          <strong>  <span class="glyphicon glyphicon-time"></span>{{comment.commentDate | date:'medium'}}
+                                        </strong>
+                                        </small>
+                                    </div>
+                                    <p>
+                                       
+                                        {{comment.commentTxt}}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                        </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div> @*// ...... Row ending for bootstrap row*@
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3>Live update for <strong>[Chat]</strong> Comments</h3>
+
+                </div>
+                <div id="autoscroll" class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix" ng-repeat="comment in recentChat">
+                            <div>
+                                @*<span ng-hide="" class="chat-img pull-left">
+                                    <img src="~/Images/you.png" alt="User Avatar" class="img-circle">
+                                </span>*@
+                                <span class="chat-img pull-left chip">
+                                    <img src="~/Images/img_avatar3.png" class="img-circle" alt="Person" width="96" height="96">
+                                    <strong>{{comment.name}}</strong>
+
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">
+                                            <a ng-show="{{user.userId!=null}}" ng-click="chatWindow(comment.group)" ng-href="#">{{comment.group}}
+                                            <span class="glyphicon glyphicon-user blue"></span>
+                                            </a>
+                                            <span ng-show="{{user.userId==null}}">
+                                                <strong>
+                                                    {{comment.group}}
+                                                </strong>
+                                               
+                                                <span class="glyphicon glyphicon-user"></span>
+                                            </span>
+
+
+                                        </strong>
+                                        <small class="pull-right text-muted">
+                                            
+                                            <strong>
+                                                <span class="glyphicon glyphicon-time"></span>{{comment.time | date:'medium'}}
+                                            </strong>
+                                        </small>
+                                    </div>
+                                    <p>
+
+                                        {{comment.msg}}
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </li>
+
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div> @*// Colum Ending*@ 
+        
+        <div class="col-lg-6 col-md-6">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3>
+                        Live  <strong>[Twitter]</strong> Update
+                        <img src="~/Images/twiter.png" alt="Alternate Text" width="30" height="30" />
+                    </h3>
+                </div>
+                <div id="autoscroll" class="panel-body">
+                    <ul class="chat">
+                        
+                       
+
+                        <a class="twitter-timeline" href="https://twitter.com/junaid1621">Tweets by junaid1621</a>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div> 
+    </div>
+</div>
+

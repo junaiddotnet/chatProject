@@ -1,0 +1,64 @@
+﻿@model blogProject.Models.commentsListViewModel
+
+@{
+    ViewBag.Title = "postList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel-body">
+    <h1 class="page-header">
+        Top Recent Comments
+        <small> 5 </small>
+    </h1>
+    @if (Model.commentsList.Count() <= 0)
+    {
+        <div class="panel panel-danger">
+            <div class="panel-heading"><h4>Comments Search Error <span class="glyphicon glyphicon-question-sign"></span> </h4></div>
+            <div class="panel-body">No recent comments avaliable  ?? <label class="btn-danger"></label></div>
+        </div>    }
+    <!-- First Blog Post -->
+    @foreach (var p in Model.commentsList)
+    {
+        <h2>
+            @Html.RouteLink(@p.commentTxt, new
+       {
+           controller = "Post",
+           action = "viewPost",
+           postId = p.postId
+       })
+            
+        </h2>
+        <p class="lead">
+            by <a href="#">@p.user.userName <span class="glyphicon glyphicon-user"></span></a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on @p.commentDate.ToString()</p>
+        <p>
+            <label class="btn btn-danger">
+                Post:@p.posts.postName
+            </label>
+           
+        </p>
+        @Html.RouteLink("Read more..", new
+   {
+       controller = "Post",
+       action = "viewPost",
+       postId = p.postId
+   },
+             new
+             {
+                 @class = "btn btn-primary"
+             }
+   )
+        <hr>
+    } @*// for loop ending*@
+
+    <!-- Pager -->
+    <ul class="pager">
+        <li class="previous">
+            <a href="#">&larr; Older</a>
+        </li>
+        <li class="next">
+            <a href="#">Newer &rarr;</a>
+        </li>
+    </ul>
+</div>

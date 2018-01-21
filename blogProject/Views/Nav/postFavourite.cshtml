@@ -1,0 +1,34 @@
+﻿@model blogProject.Models.favouriteViewModel
+    @if (Model.userId != 0)
+    {
+        <div class="panel panel-default" style="border:none">
+            <div class="panel-heading">
+                <label type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">
+                    Favourites <span class="glyphicon glyphicon-comment"></span>
+                </label>
+            </div>
+            <div id="demo" class="collapse">
+                <ul class="list-group">
+                    @foreach (var favPost in Model.favPostList)
+                    {
+                        <li class="list-group-item">
+                            <span class="glyphicon glyphicon-book"></span>
+
+                            @Html.RouteLink(favPost.posts.postName,
+                  new
+                  {
+                      controller = "Post",
+                      action = "viewPost",
+                      postid = favPost.postId
+
+                  })
+
+                        </li>
+                    } 
+
+                </ul>
+            </div>
+        </div>
+
+    }
+

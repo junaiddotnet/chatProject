@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "userManage";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div ng-app="userManage" ng-controller="manageUserController">
+
+    
+    <div class="panel-body">
+        <h1 class="page-header">
+
+            <button class="btn btn-success btn-lg">List of Current Users .. </button>
+            <button class="btn btn-primary" ng-click="addNew()">Add New <span class="glyphicon glyphicon-plus"></span></button>
+        </h1>
+
+        <div class="well">
+
+
+            <table class="table table-hover">
+                <tr>
+                    <th>
+                        User Id
+                    </th>
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        Password
+                    </th>
+                   <th>
+                       Status
+                   </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+
+                <tr ng-repeat="user in userList">
+                    <td>
+                        {{user.userId}}
+
+                    </td>
+                    <td>
+                       {{user.userName}}
+                    </td>
+                    <td>
+                        {{user.password}}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
+
+                    </td>
+                    <td>
+                      <button ng-click="deleteUser(user,$index)" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>  
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-primary">ID</button>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="newUser.userName" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text" ng-model="newUser.password" class="form-control" />
+                    </td>
+                    <td colspan="2">
+                        <button ng-click="addUser()" class="btn btn-primary">Add User <span class="glyphicon glyphicon-plus"></span> </button>
+                        
+                    </td>
+                    
+                </tr>
+            </table>
+            <div ng-show="messageShow!=null" class="alert alert-success" role="alert"><strong>Alert! </strong> {{messageShow}}</div>
+
+        </div>
+
+    </div>
+</div>

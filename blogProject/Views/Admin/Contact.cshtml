@@ -1,0 +1,100 @@
+﻿@model BlogDal.contactus
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40%;
+        border-radius: 5px;
+    }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+    img {
+        border-radius: 5px 5px 0 0;
+    }
+
+    .container {
+        padding: 2px 16px;
+    }
+</style>
+<div class="panel-body">
+
+    <h1 class="page-header">
+        Contact Us
+    </h1>
+    <div class="card">
+        <img src="~/Images/me.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+            <h4><b>Junaid Mahmood</b></h4>
+            <p>Software Engineer</p>
+        </div>
+    </div><br />
+    @using (Html.BeginForm("contact", "Admin"))
+    {
+        @*@Html.ValidationSummary()*@
+        <div class="col-lg-9">
+            <div class="form-group">
+                @*<label for="InputName">Your Name</label>*@
+                <div class="input-group">
+                    @Html.TextBoxFor(c => c.contactName, new { @class = "form-control", placeholder = "Enter Name..", required = "true" })
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-ok form-control-feedback"></i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                @*<label for="InputEmail">Your Email</label>*@
+                <div class="input-group">
+                    @Html.TextBoxFor(c => c.contactEmail, new { @class = "form-control", placeholder = "Enter Email..",type="email", required = "true" })
+
+
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-ok form-control-feedback"></i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                @*<label for="InputMessage">Message</label>*@
+                <div class="input-group">
+                    @Html.TextAreaFor(c => c.contactMessage, new { @class = "form-control", placeholder = "Enter Message..", required = "true" })
+
+
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-ok form-control-feedback"></i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="InputReal">What is 4+3? (Simple Spam Checker)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="InputReal" id="InputReal" required>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-ok form-control-feedback"></i></span>
+                </div>
+            </div>
+            <input type="submit" name="submit" id="submit" value="Contact Me" class="btn btn-primary btn-lg pull-right">
+        </div>
+
+    }
+    
+    
+</div>
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-6 well">
+        <ul class="h4">
+            <li>
+                <label for="InputName">Junaid ...... <span class="glyphicon glyphicon-user"></span> </label>Software Engineer
+
+            </li>
+            <li>
+                <label for="InputName">Email <span class="glyphicon glyphicon-book"></span> </label> ??????????
+
+            </li>
+            <li>
+                <label for="InputName">Cell <span class="glyphicon glyphicon-phone"></span> </label>0044 7427......
+
+            </li>
+        </ul>
+        
+
+    </div>
+</div>

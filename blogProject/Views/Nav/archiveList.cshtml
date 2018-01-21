@@ -1,0 +1,45 @@
+﻿@model blogProject.Models.archiveViewMode
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label type="button" class="btn btn-primary">
+            Archive History <span class="glyphicon glyphicon-calendar"></span>
+        </label>
+        
+    </div>
+    
+        <ul class="list-group">
+
+
+
+
+            @foreach (var arch in Model.listArchive)
+            {
+
+                <li class="list-group-item">
+                   
+                    <span class="glyphicon glyphicon-camera"></span>
+
+                    @Html.RouteLink(arch.MonthName + "-" + arch.Year.ToString(),
+                              new
+                              {
+                                  controller = "Post",
+                                  action = "viewPostbyMonth",
+                                  monthId = arch.MonthName,
+                                  year  = arch.Year
+                              })
+
+
+                    @*<span class="badge"> @month.Value.ToString()</span>*@
+
+
+                </li>
+
+
+            } @*foreach loop ending*@
+
+
+        </ul>
+
+   
+</div>
