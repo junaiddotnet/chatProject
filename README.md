@@ -1,12 +1,13 @@
 # chatProject
 First Time Commit
 
-This is a Chat Application And Blog , Code is developed with Asp.net MVC , C# , Sql Server , AngularJS , Ninject , SignalR
+BETA Chat and Blog Portal 
+This is a Chat Application and Blog web portal.The Code is developed using ASP.NET MVC,C#,SQL-SERVER 2014,AngularJS,Ninject,SignalR.
 
-With is chat Application you can Run any of your Chat and Start chatting with any user , And Blog in Chat is to Engage user user of Chat
+This code will help you to start any chatting web site accoding to your own requirment with some little modifications.The code is free to use.
 
-If Anyone require Database , Contact me and i will send it you seprately .
+If Anyone require Database,Plz Contact me and i will send it you seprately .
 
-Working BETA chat application is uploaded on :
+W
 
 http://www.chatjunaid.co.uk
