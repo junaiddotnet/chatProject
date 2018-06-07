@@ -9,4 +9,5 @@ This code will help you to start any chatting web site accoding to your own requ
 If Anyone require Database,Plz Contact me and i will send it you seprately .
 
 
-http://www.chatjunaid.co.uk
+http://www.junaidnet.co.uk
+
